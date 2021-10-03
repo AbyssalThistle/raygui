@@ -216,7 +216,6 @@
     #define RAYGUI_FREE(p)          free(p)
 #endif
 
-
 //----------------------------------------------------------------------------------
 // Types and Structures Definition
 // NOTE: Some types are required for RAYGUI_STANDALONE usage
@@ -287,6 +286,13 @@
         GlyphInfo *chars;       // Characters info data
     } Font;
 #endif
+
+static Vector2 _GuiMouseOffset = {0};
+void GuiSetMouseOffset(Vector2 v) { _GuiMouseOffset = v; }
+Vector2 _GetMousePosition(void)
+{
+	return Vector2Subtract(GetMousePosition(), _GuiMouseOffset);
+}
 
 // Style property
 typedef struct GuiStyleProp {
@@ -1480,7 +1486,7 @@ Rectangle GuiScrollPanel(Rectangle bounds, Rectangle content, Vector2 *scroll)
     //--------------------------------------------------------------------
     if ((state != GUI_STATE_DISABLED) && !guiLocked)
     {
-        Vector2 mousePoint = GetMousePosition();
+        Vector2 mousePoint = _GetMousePosition();
 
         // Check button state
         if (CheckCollisionPointRec(mousePoint, bounds))
@@ -1583,7 +1589,7 @@ bool GuiButton(Rectangle bounds, const char *text)
     //--------------------------------------------------------------------
     if ((state != GUI_STATE_DISABLED) && !guiLocked)
     {
-        Vector2 mousePoint = GetMousePosition();
+        Vector2 mousePoint = _GetMousePosition();
 
         // Check button state
         if (CheckCollisionPointRec(mousePoint, bounds))
@@ -1619,7 +1625,7 @@ bool GuiLabelButton(Rectangle bounds, const char *text)
     //--------------------------------------------------------------------
     if ((state != GUI_STATE_DISABLED) && !guiLocked)
     {
-        Vector2 mousePoint = GetMousePosition();
+        Vector2 mousePoint = _GetMousePosition();
 
         // Check checkbox state
         if (CheckCollisionPointRec(mousePoint, bounds))
@@ -1656,7 +1662,7 @@ bool GuiImageButtonEx(Rectangle bounds, const char *text, Texture2D texture, Rec
     //--------------------------------------------------------------------
     if ((state != GUI_STATE_DISABLED) && !guiLocked)
     {
-        Vector2 mousePoint = GetMousePosition();
+        Vector2 mousePoint = _GetMousePosition();
 
         // Check button state
         if (CheckCollisionPointRec(mousePoint, bounds))
@@ -1688,7 +1694,7 @@ bool GuiToggle(Rectangle bounds, const char *text, bool active)
     //--------------------------------------------------------------------
     if ((state != GUI_STATE_DISABLED) && !guiLocked)
     {
-        Vector2 mousePoint = GetMousePosition();
+        Vector2 mousePoint = _GetMousePosition();
 
         // Check toggle button state
         if (CheckCollisionPointRec(mousePoint, bounds))
@@ -1775,7 +1781,7 @@ bool GuiCheckBox(Rectangle bounds, const char *text, bool checked)
     //--------------------------------------------------------------------
     if ((state != GUI_STATE_DISABLED) && !guiLocked)
     {
-        Vector2 mousePoint = GetMousePosition();
+        Vector2 mousePoint = _GetMousePosition();
 
         Rectangle totalBounds = {
             (GuiGetStyle(CHECKBOX, TEXT_ALIGNMENT) == GUI_TEXT_ALIGN_LEFT)? textBounds.x : bounds.x,
@@ -1835,7 +1841,7 @@ int GuiComboBox(Rectangle bounds, const char *text, int active)
     //--------------------------------------------------------------------
     if ((state != GUI_STATE_DISABLED) && !guiLocked && (itemCount > 1))
     {
-        Vector2 mousePoint = GetMousePosition();
+        Vector2 mousePoint = _GetMousePosition();
 
         if (CheckCollisionPointRec(mousePoint, bounds) ||
             CheckCollisionPointRec(mousePoint, selector))
@@ -1897,7 +1903,7 @@ bool GuiDropdownBox(Rectangle bounds, const char *text, int *active, bool editMo
     //--------------------------------------------------------------------
     if ((state != GUI_STATE_DISABLED) && !guiLocked && (itemCount > 1))
     {
-        Vector2 mousePoint = GetMousePosition();
+        Vector2 mousePoint = _GetMousePosition();
 
         if (editMode)
         {
@@ -2010,7 +2016,7 @@ bool GuiTextBox(Rectangle bounds, char *text, int textSize, bool editMode)
     //--------------------------------------------------------------------
     if ((state != GUI_STATE_DISABLED) && !guiLocked)
     {
-        Vector2 mousePoint = GetMousePosition();
+        Vector2 mousePoint = _GetMousePosition();
 
         if (editMode)
         {
@@ -2116,7 +2122,7 @@ bool GuiSpinner(Rectangle bounds, const char *text, int *value, int minValue, in
     //--------------------------------------------------------------------
     if ((state != GUI_STATE_DISABLED) && !guiLocked)
     {
-        Vector2 mousePoint = GetMousePosition();
+        Vector2 mousePoint = _GetMousePosition();
 
         // Check spinner state
         if (CheckCollisionPointRec(mousePoint, bounds))
@@ -2192,7 +2198,7 @@ bool GuiValueBox(Rectangle bounds, const char *text, int *value, int minValue, i
     //--------------------------------------------------------------------
     if ((state != GUI_STATE_DISABLED) && !guiLocked)
     {
-        Vector2 mousePoint = GetMousePosition();
+        Vector2 mousePoint = _GetMousePosition();
 
         bool valueHasChanged = false;
 
@@ -2294,7 +2300,7 @@ bool GuiTextBoxMulti(Rectangle bounds, char *text, int textSize, bool editMode)
     //--------------------------------------------------------------------
     if ((state != GUI_STATE_DISABLED) && !guiLocked)
     {
-        Vector2 mousePoint = GetMousePosition();
+        Vector2 mousePoint = _GetMousePosition();
 
         if (editMode)
         {
@@ -2472,7 +2478,7 @@ float GuiSliderPro(Rectangle bounds, const char *textLeft, const char *textRight
     //--------------------------------------------------------------------
     if ((state != GUI_STATE_DISABLED) && !guiLocked)
     {
-        Vector2 mousePoint = GetMousePosition();
+        Vector2 mousePoint = _GetMousePosition();
 
         if (CheckCollisionPointRec(mousePoint, bounds))
         {
@@ -2623,7 +2629,7 @@ void GuiDummyRec(Rectangle bounds, const char *text)
     //--------------------------------------------------------------------
     if ((state != GUI_STATE_DISABLED) && !guiLocked)
     {
-        Vector2 mousePoint = GetMousePosition();
+        Vector2 mousePoint = _GetMousePosition();
 
         // Check button state
         if (CheckCollisionPointRec(mousePoint, bounds))
@@ -2692,7 +2698,7 @@ int GuiScrollBar(Rectangle bounds, int value, int minValue, int maxValue)
     //--------------------------------------------------------------------
     if ((state != GUI_STATE_DISABLED) && !guiLocked)
     {
-        Vector2 mousePoint = GetMousePosition();
+        Vector2 mousePoint = _GetMousePosition();
 
         if (CheckCollisionPointRec(mousePoint, bounds))
         {
@@ -2824,7 +2830,7 @@ int GuiListViewEx(Rectangle bounds, const char **text, int count, int *focus, in
     //--------------------------------------------------------------------
     if ((state != GUI_STATE_DISABLED) && !guiLocked)
     {
-        Vector2 mousePoint = GetMousePosition();
+        Vector2 mousePoint = _GetMousePosition();
 
         // Check mouse inside list view
         if (CheckCollisionPointRec(mousePoint, bounds))
@@ -2962,7 +2968,7 @@ Color GuiColorPanel(Rectangle bounds, Color color)
     //--------------------------------------------------------------------
     if ((state != GUI_STATE_DISABLED) && !guiLocked)
     {
-        Vector2 mousePoint = GetMousePosition();
+        Vector2 mousePoint = _GetMousePosition();
 
         if (CheckCollisionPointRec(mousePoint, bounds))
         {
@@ -3029,7 +3035,7 @@ float GuiColorBarAlpha(Rectangle bounds, float alpha)
     //--------------------------------------------------------------------
     if ((state != GUI_STATE_DISABLED) && !guiLocked)
     {
-        Vector2 mousePoint = GetMousePosition();
+        Vector2 mousePoint = _GetMousePosition();
 
         if (CheckCollisionPointRec(mousePoint, bounds) ||
             CheckCollisionPointRec(mousePoint, selector))
@@ -3090,7 +3096,7 @@ float GuiColorBarHue(Rectangle bounds, float hue)
     //--------------------------------------------------------------------
     if ((state != GUI_STATE_DISABLED) && !guiLocked)
     {
-        Vector2 mousePoint = GetMousePosition();
+        Vector2 mousePoint = _GetMousePosition();
 
         if (CheckCollisionPointRec(mousePoint, bounds) ||
             CheckCollisionPointRec(mousePoint, selector))
@@ -3303,7 +3309,7 @@ Vector2 GuiGrid(Rectangle bounds, float spacing, int subdivs)
     #endif
 
     GuiControlState state = guiState;
-    Vector2 mousePoint = GetMousePosition();
+    Vector2 mousePoint = _GetMousePosition();
     Vector2 currentCell = { -1, -1 };
 
     int linesV = ((int)(bounds.width/spacing))*subdivs + 1;

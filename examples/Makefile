@@ -101,7 +101,8 @@ endif
 ifeq ($(PLATFORM),PLATFORM_DESKTOP)
     ifeq ($(PLATFORM_OS),LINUX)
         RAYLIB_PREFIX ?= ..
-        RAYLIB_PATH    = $(realpath $(RAYLIB_PREFIX))
+		RAYLIB_PATH = $(realpath ../../raylib)
+		#RAYLIB_PATH = $(realpath $(RAYLIB_PATH))
     endif
 endif
 # Default path for raylib on Raspberry Pi, if installed in different path, update it!
